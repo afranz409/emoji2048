@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useGame } from '../context/GameContext.jsx'
 
 const PROJECT_URL = 'https://afranz409.github.io/emoji2048/'
@@ -15,30 +15,48 @@ const LOSS_QUIPS = [
   (s) => `Turns out ${s} pts isn't enough. The grid disagrees. 💀`,
 ]
 
-function buildShareText(isWon, score) {
-  const quips = isWon ? WIN_QUIPS : LOSS_QUIPS
-  const quip = quips[Math.floor(Math.random() * quips.length)](score)
-  return `${quip}\n\n${PROJECT_URL}`
+function ClipboardIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+    </svg>
+  )
+}
+
+function CheckIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  )
 }
 
 export default function Overlay() {
   const { state, dispatch, tileConfig, winTier } = useGame()
   const [copied, setCopied] = useState(false)
 
-  if (state.status !== 'won' && state.status !== 'lost') return null
-
   const isWon = state.status === 'won'
 
+  const quip = useMemo(() => {
+    if (state.status !== 'won' && state.status !== 'lost') return ''
+    const quips = isWon ? WIN_QUIPS : LOSS_QUIPS
+    return quips[Math.floor(Math.random() * quips.length)](state.score)
+  }, [state.status, state.score, isWon])
+
+  if (state.status !== 'won' && state.status !== 'lost') return null
+
+  const shareText = `${quip}\n\n${PROJECT_URL}`
+
+  function handleCopy() {
+    navigator.clipboard.writeText(shareText).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }).catch(() => {})
+  }
+
   function handleShare() {
-    const text = buildShareText(isWon, state.score)
-    if (navigator.share) {
-      navigator.share({ text }).catch(() => {})
-    } else {
-      navigator.clipboard.writeText(text).then(() => {
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
-      }).catch(() => {})
-    }
+    navigator.share({ text: shareText }).catch(() => {})
   }
 
   return (
@@ -48,6 +66,18 @@ export default function Overlay() {
       <p className="overlay__sub">
         {isWon ? 'Keep going or start fresh.' : `Final score: ${state.score}`}
       </p>
+
+      <div className="overlay__quip">
+        <p className="overlay__quip-text">{quip}</p>
+        <button
+          className="overlay__copy-btn"
+          onClick={handleCopy}
+          aria-label="Copy result to clipboard"
+        >
+          {copied ? <CheckIcon /> : <ClipboardIcon />}
+        </button>
+      </div>
+
       <div className="overlay__actions">
         {isWon && (
           <button className="btn" onClick={() => dispatch({ type: 'KEEP_GOING' })}>
@@ -57,9 +87,11 @@ export default function Overlay() {
         <button className="btn" onClick={() => dispatch({ type: 'NEW_GAME' })}>
           New Game
         </button>
-        <button className="btn" onClick={handleShare} aria-label="Share your result">
-          {copied ? 'Copied!' : 'Share'}
-        </button>
+        {navigator.share && (
+          <button className="btn" onClick={handleShare} aria-label="Share your result">
+            Share
+          </button>
+        )}
       </div>
     </div>
   )
