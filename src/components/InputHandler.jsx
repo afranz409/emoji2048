@@ -24,6 +24,7 @@ export default function InputHandler({ boardRef }) {
     if (!el) return
 
     function onTouchStart(e) {
+      if (e.target.closest('button, a')) return
       e.preventDefault()
       const t = e.touches[0]
       touchStart.current = { x: t.clientX, y: t.clientY }
