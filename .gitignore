@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.claude/
+.claire/
+package-lock.json
+*.local
