@@ -24,6 +24,7 @@ export default function InputHandler({ boardRef }) {
     if (!el) return
 
     function onTouchStart(e) {
+      e.preventDefault()
       const t = e.touches[0]
       touchStart.current = { x: t.clientX, y: t.clientY }
     }
@@ -40,7 +41,7 @@ export default function InputHandler({ boardRef }) {
       dispatch({ type: 'MOVE', direction: dir })
     }
 
-    el.addEventListener('touchstart', onTouchStart, { passive: true })
+    el.addEventListener('touchstart', onTouchStart, { passive: false })
     el.addEventListener('touchend', onTouchEnd, { passive: true })
     return () => {
       el.removeEventListener('touchstart', onTouchStart)
