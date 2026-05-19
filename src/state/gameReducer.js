@@ -1,4 +1,4 @@
-import { TILE_CONFIG } from '../theme.js'
+import { TILE_CONFIG, WIN_TIER } from '../theme.js'
 import { createEmptyGrid, spawnTile } from '../logic/grid.js'
 import { applyMove } from '../logic/moves.js'
 import { checkWon, checkLost } from '../logic/status.js'
@@ -70,7 +70,7 @@ function gameReducer(state, action) {
       if (newBest > state.best) saveBestToStorage(newBest)
 
       let status
-      if (checkWon(spawnedGrid, TILE_CONFIG) && !state.keepGoing) {
+      if (checkWon(spawnedGrid, WIN_TIER) && !state.keepGoing) {
         status = 'won'
       } else if (checkLost(spawnedGrid)) {
         status = 'lost'

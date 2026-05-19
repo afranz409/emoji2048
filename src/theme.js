@@ -21,3 +21,6 @@ export const TILE_CONFIG = [
 ]
 
 export const GAME_TITLE = 'EMOJI 2048'
+
+// Win fires at ghost (2048). Rainbow (4096) is reachable via Keep Going.
+export const WIN_TIER = TILE_CONFIG.length - 2

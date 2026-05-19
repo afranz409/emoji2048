@@ -1,7 +1,7 @@
 import { useGame } from '../context/GameContext.jsx'
 
 export default function Overlay() {
-  const { state, dispatch } = useGame()
+  const { state, dispatch, tileConfig, winTier } = useGame()
 
   if (state.status !== 'won' && state.status !== 'lost') return null
 
@@ -9,7 +9,7 @@ export default function Overlay() {
 
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-label={isWon ? 'You won!' : 'Game over'}>
-      <span className="overlay__emoji">{isWon ? '🌈' : '💀'}</span>
+      <span className="overlay__emoji">{isWon ? tileConfig[winTier].emoji : '💀'}</span>
       <p className="overlay__heading">{isWon ? 'You won!' : 'No moves left.'}</p>
       <p className="overlay__sub">
         {isWon ? 'Keep going or start fresh.' : `Final score: ${state.score}`}

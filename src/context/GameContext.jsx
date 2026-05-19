@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react'
-import { TILE_CONFIG } from '../theme.js'
+import { TILE_CONFIG, WIN_TIER } from '../theme.js'
 import { buildInitialState, gameReducer } from '../state/gameReducer.js'
 
 const GameContext = createContext(null)
@@ -10,7 +10,7 @@ export function GameProvider({ children }) {
   )
 
   return (
-    <GameContext.Provider value={{ state, dispatch, tileConfig: TILE_CONFIG }}>
+    <GameContext.Provider value={{ state, dispatch, tileConfig: TILE_CONFIG, winTier: WIN_TIER }}>
       {children}
     </GameContext.Provider>
   )
