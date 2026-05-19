@@ -226,7 +226,21 @@ body {
   margin-top: 0.5rem;
 }
 
-/* 11. Keyframe Animations (respects reduced-motion preference) */
+/* 11. Footer */
+.footer {
+  text-align: center;
+  padding: 0.5rem 0 1rem;
+}
+.footer__coffee {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  opacity: 0.5;
+  transition: opacity 200ms;
+}
+.footer__coffee:hover { opacity: 1; }
+
+/* 12. Keyframe Animations (respects reduced-motion preference) */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes tileSpawn {
     0%   { transform: scale(0.4); opacity: 0; }

@@ -3,6 +3,7 @@ import { GameProvider, useGame } from './context/GameContext.jsx'
 import Header from './components/Header.jsx'
 import Board from './components/Board.jsx'
 import InputHandler from './components/InputHandler.jsx'
+import Footer from './components/Footer.jsx'
 
 function GameApp() {
   const { state, dispatch } = useGame()
@@ -20,6 +21,7 @@ function GameApp() {
       <Header />
       <Board boardRef={boardRef} />
       <InputHandler boardRef={boardRef} />
+      <Footer />
     </div>
   )
 }
