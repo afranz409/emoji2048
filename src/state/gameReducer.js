@@ -3,6 +3,8 @@ import { createEmptyGrid, spawnTile } from '../logic/grid.js'
 import { applyMove } from '../logic/moves.js'
 import { checkWon, checkLost } from '../logic/status.js'
 
+const STATE_KEY = 'emoji2048_state'
+
 function loadBestFromStorage() {
   try {
     return parseInt(localStorage.getItem('emoji2048_best') ?? '0', 10) || 0
@@ -17,6 +19,35 @@ function saveBestToStorage(value) {
   } catch { /* private browsing may throw */ }
 }
 
+function saveStateToStorage(state) {
+  try {
+    localStorage.setItem(STATE_KEY, JSON.stringify({
+      grid: state.grid,
+      score: state.score,
+      history: state.history,
+      status: state.status,
+      keepGoing: state.keepGoing,
+    }))
+  } catch { /* ignore */ }
+}
+
+function loadStateFromStorage() {
+  try {
+    const raw = localStorage.getItem(STATE_KEY)
+    if (!raw) return null
+    const s = JSON.parse(raw)
+    if (
+      !Array.isArray(s.grid) || s.grid.length !== 4 ||
+      !s.grid.every(row => Array.isArray(row) && row.length === 4) ||
+      typeof s.score !== 'number' ||
+      !['playing', 'won', 'lost'].includes(s.status)
+    ) return null
+    return s
+  } catch {
+    return null
+  }
+}
+
 function findNewCell(before, after) {
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 4; c++) {
@@ -26,7 +57,8 @@ function findNewCell(before, after) {
   return null
 }
 
-function buildInitialState() {
+// Used for NEW_GAME — always starts fresh, never reads storage.
+function buildFreshState() {
   const empty = createEmptyGrid()
   const afterFirst = spawnTile(empty)
   const grid = spawnTile(afterFirst)
@@ -47,6 +79,24 @@ function buildInitialState() {
     newCells,
     keepGoing: false,
   }
+}
+
+// Used on app init — restores saved session if valid, otherwise fresh.
+function buildInitialState() {
+  const saved = loadStateFromStorage()
+  if (saved) {
+    return {
+      grid: saved.grid,
+      score: saved.score,
+      best: loadBestFromStorage(),
+      history: saved.history ?? null,
+      status: saved.status,
+      keepGoing: saved.keepGoing ?? false,
+      mergedCells: new Set(),
+      newCells: new Set(),
+    }
+  }
+  return buildFreshState()
 }
 
 function gameReducer(state, action) {
@@ -103,10 +153,8 @@ function gameReducer(state, action) {
       }
     }
 
-    case 'NEW_GAME': {
-      const fresh = buildInitialState()
-      return { ...fresh, best: state.best }
-    }
+    case 'NEW_GAME':
+      return { ...buildFreshState(), best: state.best }
 
     case 'KEEP_GOING':
       return { ...state, keepGoing: true, status: 'playing' }
@@ -119,4 +167,4 @@ function gameReducer(state, action) {
   }
 }
 
-export { buildInitialState, gameReducer, loadBestFromStorage }
+export { buildInitialState, gameReducer, loadBestFromStorage, saveStateToStorage }

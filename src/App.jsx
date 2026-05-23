@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { GameProvider, useGame } from './context/GameContext.jsx'
+import { saveStateToStorage } from './state/gameReducer.js'
 import Header from './components/Header.jsx'
 import Board from './components/Board.jsx'
 import InputHandler from './components/InputHandler.jsx'
@@ -15,6 +16,10 @@ function GameApp() {
       return () => clearTimeout(t)
     }
   }, [state.mergedCells, state.newCells, dispatch])
+
+  useEffect(() => {
+    saveStateToStorage(state)
+  }, [state])
 
   return (
     <div className="app">
