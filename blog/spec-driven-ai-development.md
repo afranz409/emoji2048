@@ -14,7 +14,7 @@ Last week I finally built it. Start to finish in about an hour using Claude Code
 
 ## The Game
 
-![Screenshot](http://afranz409.github.io/emoji2048/blog/screenshot.png)
+![Screenshot](https://github.com/afranz409/emoji2048/blob/main/blog/screenshot.png)
 
 Emoji 2048 is a modernized clone of the original, replacing numbers with an emotion arc — from 😶 to 🌈. Built with React, deployed on GitHub Pages, open source.
 
