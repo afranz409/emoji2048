@@ -1,8 +1,9 @@
 import { useGame } from '../context/GameContext.jsx'
 import Cell from './Cell.jsx'
 import Overlay from './Overlay.jsx'
+import HowToPlay from './HowToPlay.jsx'
 
-export default function Board({ boardRef }) {
+export default function Board({ boardRef, showHelp, onHelpClose }) {
   const { state } = useGame()
 
   return (
@@ -15,6 +16,7 @@ export default function Board({ boardRef }) {
         )}
       </div>
       <Overlay />
+      <HowToPlay open={showHelp} onClose={onHelpClose} />
     </div>
   )
 }
