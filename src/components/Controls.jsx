@@ -1,4 +1,5 @@
 import { useGame } from '../context/GameContext.jsx'
+import HowToPlay from './HowToPlay.jsx'
 
 export default function Controls() {
   const { state, dispatch } = useGame()
@@ -17,6 +18,7 @@ export default function Controls() {
       >
         Undo
       </button>
+      <HowToPlay />
     </div>
   )
 }

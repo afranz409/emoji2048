@@ -256,7 +256,65 @@ body {
   margin-top: 0.5rem;
 }
 
-/* 11. Footer */
+/* 11. How To Play */
+.btn--icon-label {
+  padding: 6px 10px;
+  font-size: var(--text-base);
+  line-height: 1;
+}
+.htp-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: overlayIn 200ms ease-out both;
+}
+.htp-modal {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-grid);
+  border-radius: 16px;
+  padding: 1.75rem;
+  max-width: 340px;
+  width: calc(100% - 2rem);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.htp-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--text-xl);
+  color: var(--color-accent-gold);
+}
+.htp-rules {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.htp-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+.htp-rule__icon {
+  font-size: var(--text-base);
+  min-width: 1.5rem;
+  text-align: center;
+  margin-top: 1px;
+}
+.htp-close {
+  align-self: flex-end;
+}
+
+/* 12. Footer */
 .footer {
   text-align: center;
   padding: 0.5rem 0 1rem;
