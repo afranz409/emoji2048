@@ -1,6 +1,6 @@
 # The Spec-Driven Build: From Ten-Year-Old Idea to Live Game in an Hour
 
-*Alex Franz · 5/24/2026 · [X min read]*
+*Alex Franz · 5/25/2026 · 5 min read*
 
 ---
 
