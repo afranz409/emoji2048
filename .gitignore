@@ -4,3 +4,4 @@ dist/
 .claire/
 package-lock.json
 *.local
+.env
